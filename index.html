@@ -1,303 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DigiClock</title>
     <style>
-        @font-face {
-            font-family: "FX_LED";
-            src: url("fonts/FXLED.TTF");
-        }
+      @font-face {
+        font-family: "FX_LED";
+        src: url("fonts/FXLED.TTF");
+      }
 
-        @font-face {
-            font-family: "Hack";
-            src: url("fonts/Hack-Bold.ttf");
-        }
+      @font-face {
+        font-family: "Hack";
+        src: url("fonts/Hack-Bold.ttf");
+      }
 
-        body {
-            background-color: #000;
-            color: #fff;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+      body {
+        background-color: #000;
+        color: #fff;
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
+      .digital-clock {
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        border-radius: 2rem;
+        user-select: none;
+        padding: 0 2rem;
+        border: 0.5rem solid #2d2d2d;
+      }
+
+      .week {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 3rem;
+        color: #2d2d2d;
+        font-weight: bold;
+        font-family: "Hack";
+      }
+
+      .week .active {
+        color: #fff;
+      }
+
+      .time {
+        font-family: "FX_LED";
+        display: flex;
+        align-items: center;
+      }
+
+      .hour,
+      .min,
+      .dot {
+        display: inline-block;
+        font-size: 13rem;
+      }
+
+      .ampm {
+        font-family: "Hack";
+        font-size: 2rem;
+        margin-left: 1rem;
+        color: #2d2d2d;
+      }
+
+      .ampm div {
+        color: #2d2d2d;
+      }
+
+      .ampm div.active {
+        color: #fff;
+      }
+
+      .invisible {
+        visibility: hidden;
+      }
+
+      @keyframes borderGlow {
+        0% {
+          border-color: #ff0000;
+          box-shadow: 0 0 20px #ff0000;
+        }
+        20% {
+          border-color: #00ff00;
+          box-shadow: 0 0 20px #00ff00;
+        }
+        40% {
+          border-color: #0000ff;
+          box-shadow: 0 0 20px #0000ff;
+        }
+        60% {
+          border-color: #ff00ff;
+          box-shadow: 0 0 20px #ff00ff;
+        }
+        80% {
+          border-color: #00ffff;
+          box-shadow: 0 0 20px #00ffff;
+        }
+        100% {
+          border-color: #ff0000;
+          box-shadow: 0 0 20px #ff0000;
+        }
+      }
+
+      .digital-clock {
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        border-radius: 2rem;
+        user-select: none;
+        padding: 0 2rem;
+        border: 0.5rem solid #2d2d2d;
+        animation: borderGlow 10s linear infinite;
+
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+      }
+
+      .digital-clock:hover {
+        animation: borderGlow 5s linear infinite;
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+      }
+
+      .time {
+        font-family: "FX_LED";
+        display: flex;
+        align-items: center;
+
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      /* For tablets and smaller desktop screens */
+      @media screen and (max-width: 768px) {
         .digital-clock {
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            border-radius: 2rem;
-            user-select: none;
-            padding: 0 2rem;
-            border: 0.5rem solid #2d2d2d;
+          padding: 0 1.5rem;
+          border-width: 0.4rem;
+        }
+
+        .hour,
+        .min,
+        .dot {
+          font-size: 10rem;
         }
 
         .week {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 3rem;
-            color: #2d2d2d;
-            font-weight: bold;
-            font-family: "Hack";
-        }
-
-        .week .active {
-            color: #fff;
-        }
-
-                .time {
-            font-family: "FX_LED";
-            display: flex;
-            align-items: center;
-        }
-
-        .hour, .min, .dot {
-            display: inline-block;
-            font-size: 13rem;
+          width: 2.5rem;
+          font-size: 0.9rem;
         }
 
         .ampm {
-            font-family: "Hack";
-            font-size: 2rem;
-            margin-left: 1rem;
-            color: #2d2d2d;
+          font-size: 1.5rem;
+          margin-left: 0.8rem;
+        }
+      }
+
+      /* For mobile phones in landscape */
+      @media screen and (max-width: 576px) {
+        .digital-clock {
+          padding: 0 1rem;
+          border-width: 0.3rem;
         }
 
-        .ampm div {
-            color:#2d2d2d;
+        .hour,
+        .min,
+        .dot {
+          font-size: 7rem;
         }
 
-        .ampm div.active {
-            color: #fff;
+        .week {
+          width: 2rem;
+          font-size: 0.8rem;
         }
 
-        .invisible {
-            visibility: hidden;
+        .ampm {
+          font-size: 1.2rem;
+          margin-left: 0.6rem;
+        }
+      }
+
+      /* For mobile phones in portrait */
+      @media screen and (max-width: 375px) {
+        .digital-clock {
+          padding: 0 0.8rem;
+          border-width: 0.25rem;
         }
 
+        .hour,
+        .min,
+        .dot {
+          font-size: 5rem;
+        }
 
-                @keyframes borderGlow {
-            0% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
-            20% { border-color: #00ff00; box-shadow: 0 0 20px #00ff00; }
-            40% { border-color: #0000ff; box-shadow: 0 0 20px #0000ff; }
-            60% { border-color: #ff00ff; box-shadow: 0 0 20px #ff00ff; }
-            80% { border-color: #00ffff; box-shadow: 0 0 20px #00ffff; }
-            100% { border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+        .week {
+          width: 1.5rem;
+          font-size: 0.7rem;
+        }
+
+        .ampm {
+          font-size: 1rem;
+          margin-left: 0.5rem;
+        }
+      }
+
+      /* For very small devices */
+      @media screen and (max-width: 320px) {
+        .digital-clock {
+          padding: 0 0.5rem;
+          border-width: 0.2rem;
+        }
+
+        .hour,
+        .min,
+        .dot {
+          font-size: 4rem;
+        }
+
+        .week {
+          width: 1.2rem;
+          font-size: 0.6rem;
+        }
+
+        .ampm {
+          font-size: 0.8rem;
+          margin-left: 0.4rem;
+        }
+      }
+
+      /* For devices in landscape orientation with limited height */
+      @media screen and (max-height: 450px) and (orientation: landscape) {
+        body {
+          min-height: 100vh;
+          padding: 1rem;
         }
 
         .digital-clock {
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            border-radius: 2rem;
-            user-select: none;
-            padding: 0 2rem;
-            border: 0.5rem solid #2d2d2d;
-            animation: borderGlow 10s linear infinite;
-    
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+          padding: 0.3rem 1rem;
+          transform: scale(0.8);
         }
 
-        
-        .digital-clock:hover {
-            animation: borderGlow 5s linear infinite;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+        .hour, .min, .dot {
+          font-size: 4rem;
         }
 
-        .time {
-            font-family: "FX_LED";
-            display: flex;
-            align-items: center;
-           
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        .week {
+          width: 1.5rem;
+          font-size: 0.6rem;
         }
 
-        /* For tablets and smaller desktop screens */
-        @media screen and (max-width: 768px) {
-            .digital-clock {
-                padding: 0 1.5rem;
-                border-width: 0.4rem;
-            }
+        .ampm {
+          font-size: 0.8rem;
+          margin-left: 0.4rem;
+        }
+      }
 
-            .hour, .min, .dot {
-                font-size: 10rem;
-            }
-
-            .week {
-                width: 2.5rem;
-                font-size: 0.9rem;
-            }
-
-            .ampm {
-                font-size: 1.5rem;
-                margin-left: 0.8rem;
-            }
+      /* For smaller landscape devices */
+      @media screen and (orientation: landscape) and (max-height: 350px) {
+        .digital-clock {
+          transform: scale(0.7);
         }
 
-        /* For mobile phones in landscape */
-        @media screen and (max-width: 576px) {
-            .digital-clock {
-                padding: 0 1rem;
-                border-width: 0.3rem;
-            }
-
-            .hour, .min, .dot {
-                font-size: 7rem;
-            }
-
-            .week {
-                width: 2rem;
-                font-size: 0.8rem;
-            }
-
-            .ampm {
-                font-size: 1.2rem;
-                margin-left: 0.6rem;
-            }
+        .hour, .min, .dot {
+          font-size: 3.5rem;
         }
 
-        /* For mobile phones in portrait */
-        @media screen and (max-width: 375px) {
-            .digital-clock {
-                padding: 0 0.8rem;
-                border-width: 0.25rem;
-            }
-
-            .hour, .min, .dot {
-                font-size: 5rem;
-            }
-
-            .week {
-                width: 1.5rem;
-                font-size: 0.7rem;
-            }
-
-            .ampm {
-                font-size: 1rem;
-                margin-left: 0.5rem;
-            }
+        .week {
+          width: 1.2rem;
+          font-size: 0.5rem;
         }
 
-        /* For very small devices */
-        @media screen and (max-width: 320px) {
-            .digital-clock {
-                padding: 0 0.5rem;
-                border-width: 0.2rem;
-            }
+        .ampm {
+          font-size: 0.7rem;
+          margin-left: 0.3rem;
+        }
+      }
 
-            .hour, .min, .dot {
-                font-size: 4rem;
-            }
-
-            .week {
-                width: 1.2rem;
-                font-size: 0.6rem;
-            }
-
-            .ampm {
-                font-size: 0.8rem;
-                margin-left: 0.4rem;
-            }
+      /* For very small landscape devices */
+      @media screen and (orientation: landscape) and (max-height: 280px) {
+        .digital-clock {
+          transform: scale(0.6);
         }
 
-        /* For devices in landscape orientation with limited height */
-        @media screen and (max-height: 450px) and (orientation: landscape) {
-            .digital-clock {
-                padding: 0.5rem 1rem;
-            }
-
-            .hour, .min, .dot {
-                font-size: 5rem;
-            }
-
-            .week {
-                width: 2rem;
-                font-size: 0.7rem;
-            }
-
-            .ampm {
-                font-size: 1rem;
-            }
+        .hour, .min, .dot {
+          font-size: 3rem;
         }
+
+        .week {
+          width: 1rem;
+          font-size: 0.45rem;
+        }
+
+        .ampm {
+          font-size: 0.6rem;
+          margin-left: 0.2rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="digital-clock">
-        <div class="week">
-            <div class="active">SUN</div>
-            <div>MON</div>
-            <div>TUE</div>
-            <div>WED</div>
-            <div>THUR</div>
-            <div>FRI</div>
-            <div>SAT</div>
+      <div class="week">
+        <div class="active">SUN</div>
+        <div>MON</div>
+        <div>TUE</div>
+        <div>WED</div>
+        <div>THUR</div>
+        <div>FRI</div>
+        <div>SAT</div>
+      </div>
+      <div class="time">
+        <div class="hour">12</div>
+        <div class="dot">:</div>
+        <div class="min">05</div>
+        <div class="ampm">
+          <div class="am">AM</div>
+          <div class="pm">PM</div>
         </div>
-        <div class="time">
-            <div class="hour">12</div>
-            <div class="dot">:</div>
-            <div class="min">05</div>
-            <div class="ampm">
-                <div class="am">AM</div>
-                <div class="pm">PM</div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script>
-        const $ = (selector) => {
-            return document.querySelector(selector);
-        }
-        const hour = $(".hour");
-        const min = $(".min");
-        const dot = $(".dot");
-        const week = $(".week");
-        const am = $(".am");
-        const pm = $(".pm");
-        let showDot = true;
+      const $ = (selector) => {
+        return document.querySelector(selector);
+      };
+      const hour = $(".hour");
+      const min = $(".min");
+      const dot = $(".dot");
+      const week = $(".week");
+      const am = $(".am");
+      const pm = $(".pm");
+      let showDot = true;
 
-        function update() {
-            showDot = !showDot;
-            const now = new Date();
-            let hours = now.getHours();
-            const minutes = now.getMinutes();
+      function update() {
+        showDot = !showDot;
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
 
-            //convert to 12hours
-            const isAM = hours < 12;
-            hours = hours % 12;
-            hours = hours ? hours : 12; 
+        //convert to 12hours
+        const isAM = hours < 12;
+        hours = hours % 12;
+        hours = hours ? hours : 12;
 
-            //update am pm indicator
-            if (isAM) {
-                am.classList.add("active");
-                pm.classList.remove("active");
-            } else {
-                am.classList.remove("active");
-                pm.classList.add("active");
-            }
-           
-
-            if (showDot) {
-                dot.classList.remove("invisible");
-            } else {
-                dot.classList.add("invisible");
-            }
-
-            hour.textContent = String(hours).padStart(2, "0");
-            min.textContent = String(minutes).padStart(2, "0");
-
-            Array.from(week.children).forEach((wee) => {
-                wee.classList.remove("active");
-            });
-            week.children[now.getDay()].classList.add("active");
+        //update am pm indicator
+        if (isAM) {
+          am.classList.add("active");
+          pm.classList.remove("active");
+        } else {
+          am.classList.remove("active");
+          pm.classList.add("active");
         }
 
-        update(); 
-        setInterval(update, 500);
+        if (showDot) {
+          dot.classList.remove("invisible");
+        } else {
+          dot.classList.add("invisible");
+        }
+
+        hour.textContent = String(hours).padStart(2, "0");
+        min.textContent = String(minutes).padStart(2, "0");
+
+        Array.from(week.children).forEach((wee) => {
+          wee.classList.remove("active");
+        });
+        week.children[now.getDay()].classList.add("active");
+      }
+
+      update();
+      setInterval(update, 500);
     </script>
-</body>
+  </body>
 </html>
